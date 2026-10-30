@@ -1,0 +1,16 @@
+# Rojo / build outputs
+build/
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+!assets/**/*.rbxm
+sourcemap.json
+
+# Downloaded type definitions (scripts/check.ps1)
+.luau-defs/
+
+# Rokit local cache, OS / editor files
+.DS_Store
+Thumbs.db
+*.log

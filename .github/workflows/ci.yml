@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install toolchain (rokit.toml)
+        uses: CompeyDev/setup-rokit@v0.2.1
+
+      - name: Rojo build
+        run: rojo build default.project.json -o Hexland.rbxl
+
+      - name: StyLua
+        run: stylua --check src tests
+
+      - name: Selene
+        run: selene src tests
+
+      - name: Type check (luau-lsp)
+        run: |
+          curl -sSL -o globalTypes.d.luau https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/main/scripts/globalTypes.None.d.luau
+          rojo sourcemap default.project.json -o sourcemap.json
+          luau-lsp analyze --platform=roblox --sourcemap=sourcemap.json --definitions=@roblox=globalTypes.d.luau src
+
+      - name: Unit tests (Lune)
+        run: lune run tests/run
+
+      - name: Upload place file
+        uses: actions/upload-artifact@v4
+        with:
+          name: Hexland.rbxl
+          path: Hexland.rbxl

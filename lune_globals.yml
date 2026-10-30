@@ -1,0 +1,12 @@
+---
+base: roblox
+name: lune_globals
+globals:
+  script:
+    any: true
+  test:
+    any: true
+  expect:
+    any: true
+  Shared:
+    any: true
